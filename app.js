@@ -111,29 +111,6 @@ app.post('/add-price', (req, res) => {
     res.redirect('/'); // 成功後回到首頁
   });
 });
-app.get('/search', (req, res) => {
-  const { rocYear, month, TorocYear, Tomonth } = req.query;
-
-  // 將民國年轉換為西元年
-  const startYear = parseInt(rocYear) + 1911;
-  const endYear = parseInt(TorocYear) + 1911;
-
-  // 補零處理月份
-  const startMonth = month.padStart(2, '0');
-  const endMonth = Tomonth.padStart(2, '0');
-
-  // 建立起始與結束日期字串
-  const startDate = `${startYear}-${startMonth}-01`;
-  const endDate = `${endYear}-${endMonth}-31`; // 假設每月最多31天
-
-  // 篩選符合日期區間的資料
-  const filteredPrices = allPrices.filter(price => {
-    return price.date >= startDate && price.date <= endDate;
-  });
-
-  // 渲染 EJS 模板，傳入篩選後的資料
-  res.render('index', { prices: filteredPrices });
-});
 
 
 app.listen(PORT, () => {
