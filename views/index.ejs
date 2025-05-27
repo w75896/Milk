@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,22 +11,30 @@
       border-collapse: collapse;
       margin-top: 20px;
     }
-    th, td {
+
+    th,
+    td {
       border: 1px solid #ddd;
       padding: 8px;
       text-align: center;
     }
+
     th {
       background-color: #f4f4f4;
     }
+
     form {
       margin-bottom: 20px;
     }
-    input[type="text"], input[type="number"], input[type="date"] {
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
       padding: 5px;
       margin: 5px;
       width: 120px;
     }
+
     input[type="submit"] {
       padding: 6px 12px;
       background-color: #4CAF50;
@@ -33,35 +42,80 @@
       border: none;
       cursor: pointer;
     }
+
     input[type="submit"]:hover {
       background-color: #45a049;
     }
   </style>
 </head>
+
 <body>
-  <h1>Product Prices</h1>
+  <h2>新增價格資料</h2>
 
   <form action="/add-price" method="POST">
-    <label for="date">日期：</label>
-    <input type="date" id="date" name="date" required>
+    <label for="rocYear">年份:</label>
+    <select name="rocYear" id="rocYear" required>
+      <% for(let year=new Date().getFullYear() - 1911; year>= 80; year--) { %>
+        <option value="<%= year %>年">民國 <%= year %> 年</option>
+        <% } %>
+    </select>
 
-    <label for="piglet_10kg">小豬 (10kg)：</label>
+    <label for="month">月份:</label>
+    <select name="month" id="month" required>
+      <% for(let m=1; m <=12; m++) { let mStr=m.toString().padStart(2, '0' ); %>
+        <option value="<%= mStr %>月">
+          <%= mStr %> 月
+        </option>
+        <% } %>
+    </select>
+    <label for="piglet_10kg">豬肉 (10kg) 價格：</label>
     <input type="number" step="0.01" id="piglet_10kg" name="piglet_10kg">
-
-    <label for="milk_purchase_ret">生乳收購價：</label>
+    <label for="milk_purchase_ret">生乳 價格：</label>
     <input type="number" step="0.01" id="milk_purchase_ret" name="milk_purchase_ret">
-
-    <label for="raw_sheep_milk">生羊乳：</label>
+    <label for="raw_sheep_milk">生羊乳 價格：</label>
     <input type="number" step="0.01" id="raw_sheep_milk" name="raw_sheep_milk">
-
-    <label for="live_chicken">活雞：</label>
+    <label for="live_chicken">活雞 價格：</label>
     <input type="number" step="0.01" id="live_chicken" name="live_chicken">
-
-    <label for="white_egg">白蛋：</label>
+    <label for="white_egg">白蛋 價格：</label>
     <input type="number" step="0.01" id="white_egg" name="white_egg">
-
     <input type="submit" value="新增價格資料">
   </form>
+  <h2>查詢價格資料</h2>
+  <form style="display: flex; height: 30px;" action="/" method="GET">
+  <label for="queryRocYear">年份:</label>
+  <select name="rocYear" id="queryRocYear" required>
+    <% for(let year = new Date().getFullYear() - 1911; year >= 80; year--) { %>
+      <option value="<%= year %>">民國 <%= year %> 年</option>
+    <% } %>
+  </select>
+
+  <label for="queryMonth">月份:</label>
+  <select name="month" id="queryMonth" required>
+    <% for(let m = 1; m <= 12; m++) { %>
+      <% let mStr = m.toString().padStart(2, '0'); %>
+      <option value="<%= mStr %>"><%= mStr %> 月</option>
+    <% } %>
+  </select>
+
+  <p>到</p>
+
+  <label for="ToqueryRocYear">年份:</label>
+  <select name="TorocYear" id="ToqueryRocYear" required>
+    <% for(let year = new Date().getFullYear() - 1911; year >= 80; year--) { %>
+      <option value="<%= year %>">民國 <%= year %> 年</option>
+    <% } %>
+  </select>
+
+  <label for="ToqueryMonth">月份:</label>
+  <select name="Tomonth" id="ToqueryMonth" required>
+    <% for(let m = 1; m <= 12; m++) { %>
+      <% let mStr = m.toString().padStart(2, '0'); %>
+      <option value="<%= mStr %>"><%= mStr %> 月</option>
+    <% } %>
+  </select>
+
+  <input type="submit" value="查詢">
+</form>
 
   <table>
     <thead>
@@ -75,23 +129,109 @@
       </tr>
     </thead>
     <tbody>
-      <% if (prices.length > 0) { %>
-        <% prices.forEach(price => { %>
+      <% if (prices.length> 0) { %>
+        <% prices.forEach(price=> { %>
           <tr>
-            <td><%= price.date %></td>
-            <td><%= price.piglet_10kg %></td>
-            <td><%= price.milk_purchase_ret %></td>
-            <td><%= price.raw_sheep_milk %></td>
-            <td><%= price.live_chicken %></td>
-            <td><%= price.white_egg %></td>
+            <td>
+              <%= price.date %>
+            </td>
+            <td>
+              <%= price.piglet_10kg %>
+            </td>
+            <td>
+              <%= price.milk_purchase_ret %>
+            </td>
+            <td>
+              <%= price.raw_sheep_milk %>
+            </td>
+            <td>
+              <%= price.live_chicken %>
+            </td>
+            <td>
+              <%= price.white_egg %>
+            </td>
           </tr>
-        <% }) %>
-      <% } else { %>
-        <tr>
-          <td colspan="6">無資料</td>
-        </tr>
-      <% } %>
+          <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="6">無資料</td>
+              </tr>
+              <% } %>
     </tbody>
   </table>
+  <h2>價格變化折線圖</h2>
+<canvas id="priceChart" height="120"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const rawData = <%- JSON.stringify(prices) %>;
+
+  const labels = rawData.map(row => row.date);
+  const pigletData = rawData.map(row => row.piglet_10kg);
+  const milkData = rawData.map(row => row.milk_purchase_ret);
+  const sheepMilkData = rawData.map(row => row.raw_sheep_milk);
+  const chickenData = rawData.map(row => row.live_chicken);
+  const eggData = rawData.map(row => row.white_egg);
+
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  const priceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels.reverse(), // 日期從舊到新
+      datasets: [
+        {
+          label: '小豬 (10kg)',
+          data: pigletData.reverse(),
+          borderColor: 'rgba(255, 99, 132, 1)',
+          fill: false
+        },
+        {
+          label: '生乳收購價',
+          data: milkData.reverse(),
+          borderColor: 'rgba(54, 162, 235, 1)',
+          fill: false
+        },
+        {
+          label: '生羊乳',
+          data: sheepMilkData.reverse(),
+          borderColor: 'rgba(255, 206, 86, 1)',
+          fill: false
+        },
+        {
+          label: '活雞',
+          data: chickenData.reverse(),
+          borderColor: 'rgba(75, 192, 192, 1)',
+          fill: false
+        },
+        {
+          label: '白蛋',
+          data: eggData.reverse(),
+          borderColor: 'rgba(153, 102, 255, 1)',
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: '日期'
+          }
+        },
+        y: {
+          beginAtZero: false,
+          title: {
+            display: true,
+            text: '價格（元）'
+          }
+        }
+      }
+    }
+  });
+</script>
+
 </body>
+
 </html>
