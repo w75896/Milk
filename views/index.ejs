@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Prices</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    input[type="text"], input[type="number"], input[type="date"] {
+      padding: 5px;
+      margin: 5px;
+      width: 120px;
+    }
+    input[type="submit"] {
+      padding: 6px 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Prices</h1>
+
+  <form action="/add-price" method="POST">
+    <label for="date">日期：</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="piglet_10kg">小豬 (10kg)：</label>
+    <input type="number" step="0.01" id="piglet_10kg" name="piglet_10kg">
+
+    <label for="milk_purchase_ret">生乳收購價：</label>
+    <input type="number" step="0.01" id="milk_purchase_ret" name="milk_purchase_ret">
+
+    <label for="raw_sheep_milk">生羊乳：</label>
+    <input type="number" step="0.01" id="raw_sheep_milk" name="raw_sheep_milk">
+
+    <label for="live_chicken">活雞：</label>
+    <input type="number" step="0.01" id="live_chicken" name="live_chicken">
+
+    <label for="white_egg">白蛋：</label>
+    <input type="number" step="0.01" id="white_egg" name="white_egg">
+
+    <input type="submit" value="新增價格資料">
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>小豬 (10kg)</th>
+        <th>生乳收購價</th>
+        <th>生羊乳</th>
+        <th>活雞</th>
+        <th>白蛋</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (prices.length > 0) { %>
+        <% prices.forEach(price => { %>
+          <tr>
+            <td><%= price.date %></td>
+            <td><%= price.piglet_10kg %></td>
+            <td><%= price.milk_purchase_ret %></td>
+            <td><%= price.raw_sheep_milk %></td>
+            <td><%= price.live_chicken %></td>
+            <td><%= price.white_egg %></td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="6">無資料</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>
